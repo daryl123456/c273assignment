@@ -1,0 +1,147 @@
+
+
+<html lang="en">
+    <head>
+        <!--daryl 19042545-->
+        <title>HOME</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/all.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <script src="js/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="js/additional-methods.min.js" type="text/javascript"></script>
+        <script>
+            $(document).ready(function () {
+
+                $("form").validate({
+                    rules: {
+                        username: {
+                            required: true,
+                            pattern: /^[a-zA-Z]{2,}$/
+                        },
+                        pwd: {
+                            required: true,
+                            pattern: /^([a-zA-Z0-9@*#]{8,15})$/
+                        }
+                    },
+                    messages: {
+                        username: {
+                            required: "Please enter your name",
+                            pattern: "Pls enter more letters"
+                        },
+                        pwd: {
+                            required: "Please enter your password",
+                            pattern: "Password must consists of at least 8 characters and not more than 15 characters."
+                        }
+                    },
+                    submitHandler: function () {
+                        return true;
+                    }
+
+                });
+                $("form").submit(function () {
+                    var username = $("#username").val();
+                    var pass = $("#pass").val();
+                    if (username != "" && pass != "")
+                    {
+                        $.ajax
+                                ({
+                                    type: 'post',
+                                    url: 'http://localhost/C273_Assignment1/do_login.php',
+                                  
+                                    data: {
+                                        username: username,
+                                        pass: pass
+                                        
+                                    },
+                                    dataType: "JSON",
+                                    success: function (response) {
+                                        console.log(response);
+                                        if (response.result == "success")
+                                        {
+                                            window.location.href = "exercise.php";
+                                        } else
+                                        {
+                                            alert("Wrong Details");
+                                        }
+                                    }
+                                });
+                    } else
+                    {
+                        alert("Please Fill All The Details");
+                    }
+
+                    return false;
+                });
+            });
+
+        </script>
+        <style>
+            .navbar-custom{
+                background-color: #282828;
+                font-size: 20px;
+
+            }
+            .navbar-custom2{
+                background-color: #97743A;
+            }
+            .carousel-item img{
+                width: 100%;
+            }
+            .container{
+                background-color: white;
+                margin-top: 50px;
+                padding: 20px;               
+            }
+            *       form .error {
+                color: #ff0000;
+            }
+
+        </style>
+    </head>
+    <body style="background-image: url(images/ychback.jpg); background-repeat: no-repeat; background-attachment: fixed;">
+
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+            <a class="navbar-brand"><img src="images/ych.png" height="50" width="170"/></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="http://localhost/C273_Assignment1/Login.html">LOGIN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="http://localhost/C273_Assignment1/Register.html">REGISTER</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </nav>
+        <div class="container">
+            <h3>Login</h3>
+
+            <form id="form" method="post" action="#" class="form-horizontal">
+                <div class="form-group">
+                    <label for="username">Username<span style="color:red">*</span>:</label>
+                    <input type="text" name="username" id="username" class="form-control"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="pass">Password<span style="color:red">*</span>:</label>             
+                    <input type="password" name="pwd" id="pass" class="form-control" placeholder="8-15 characters"/>
+                </div>
+
+                <input class="btn btn-block btn-primary" type="submit" value="Submit"/>
+            </form>
+        </div>
+
+    </body>
+    <!--daryl 19042545-->
+</html>

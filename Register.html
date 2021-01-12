@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<!--daryl 19042545-->
+
+<html lang="en">
+    <head>
+        <title>HOME</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/all.css">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
+        <script src="js/jquery.validate.min.js" type="text/javascript"></script>
+        <script src="js/additional-methods.min.js" type="text/javascript"></script>
+        <script>
+            $(document).ready(function () {
+
+                $("form").validate({
+                    rules: {
+                        username: {
+                            required: true,
+                            pattern: /^[a-zA-Z]{2,}$/
+                        },
+                        pwd: {
+                            required: true,
+                            pattern: /^([a-zA-Z0-9@*#]{8,15})$/
+                        },
+                        height: {
+                            required: true,
+                            pattern: /^\d+(\.\d{1,2})?$/
+                        },
+                        weight: {
+                            required: true,
+                            pattern: /^\d+(\.\d{1,2})?$/
+                        },
+                        date: {
+                            required: true,
+                            pattern: /^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/
+                        },
+                        active: {
+                            required: true
+                        }
+                    },
+                    messages: {
+                        username: {
+                            required: "Please enter your name",
+                            pattern: "Pls enter more letters and no number"
+                        },
+                        pwd: {
+                            required: "Please enter your password",
+                            pattern: "Password must consists of at least 8 characters and not more than 15 characters."
+                        },
+                        height: {
+                            required: "Please enter your height",
+                            pattern: "Please enter numbers only."
+                        },
+                        weight: {
+                            required: "Please enter your weight",
+                            pattern: "Please enter numbers only."
+                        },
+                        date: {
+                            required: "Please enter your date of birth",
+                            pattern: "Please enter in format of yyyy-mm-dd."
+                        },
+                        active: {
+                            required: "Please select an option",
+                        }
+                    },
+
+                    errorPlacement: function (error, element) {
+                        // Get inputs with this name
+                        var obj = $('[name="' + element.attr('name') + '"]');
+                        // Are there multiple?
+                        if (obj.length > 1) {
+                            // Add error after whatever the parent element is of the last one
+                            error.insertAfter(obj.last().parent());
+                        } else {
+                            // Default, add error after the input
+                            error.insertAfter(obj);
+                        }
+                    },
+
+                    submitHandler: function () {
+                        return true;
+                    }
+                });
+                $("form").submit(function () {
+                    var username = $("#idUser").val();
+                    var password = $("#idPwd").val();
+                    var height = $("#idHeight").val();
+                    var weight = $("#idWeight").val();
+                    var date = $("#idDate").val();
+                    var active = $(":radio:checked").val();
+
+                    $.ajax({
+                        type: "GET",
+                        url: "http://localhost/C273_Assignment1/doRegister.php",
+                        data: "height=" + height + "&weight=" + weight + "&username=" + username + "&password="+ password + "&date="+ date + "&active="+ active,
+                        cache: false,
+                        dataType: "JSON",
+                        success: function (response) {
+                            $('#results').html(response.result);
+
+                        },
+                        error: function (obj, textStatus, errorThrown) {
+                            console.log("Error " + textStatus + ": " + errorThrown);
+                        }
+                    });
+
+                    
+                });
+
+            });
+        </script>
+        <style>
+            .navbar-custom{
+                background-color: #282828;
+                font-size: 20px;
+
+            }
+            .navbar-custom2{
+                background-color: #97743A;
+            }
+            .carousel-item img{
+                width: 100%;
+            }
+            .container{
+                background-color: white;
+                margin-top: 50px;
+                padding: 20px;               
+            }
+            *       form .error {
+                color: #ff0000;
+            }
+
+        </style>
+    </head>
+    <body style="background-image: url(images/ychback.jpg); background-repeat: no-repeat; background-attachment: fixed;">
+
+        <nav class="navbar navbar-expand-lg navbar-dark navbar-custom">
+            <a class="navbar-brand"><img src="images/ych.png" height="50" width="170"/></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="http://localhost/C273_Assignment1/Login.html">LOGIN</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="http://localhost/C273_Assignment1/Register.html">REGISTER</a>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </nav>
+        <div class="container">
+            <h3>Register</h3>
+
+            <form id="form" method="post" action="#" class="form-horizontal">
+                <div class="form-group">
+                    <label for="idUser">Username<span style="color:red">*</span>:</label>
+                    <input type="text" name="username" id="idUser" class="form-control"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="idPwd">Password<span style="color:red">*</span>:</label>             
+                    <input type="password" name="pwd" id="idPwd" class="form-control" placeholder="8-15 characters"/>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="idHeight">Height(m)<span style="color:red">*</span>:</label>             
+                            <input type="text" name="height" id="idHeight" class="form-control" placeholder="Height(m)"/>  
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="idWeight">Weight(kg)<span style="color:red">*</span>:</label>             
+                            <input type="text" name="weight" id="idWeight" class="form-control" placeholder="Weight(kg)"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="idDate">Date of Birth<span style="color:red">*</span>:</label>             
+                    <input type="text" name="date" id="idDate" class="form-control" placeholder="yyyy-mm-dd"/>  
+                </div>
+                <label>Active level</label>   <br/>               
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="active" id="inlineRadio1" value="Sedentary">
+                    <label class="form-check-label" for="inlineRadio1">Sedentary</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="active" id="inlineRadio2" value="Moderate">
+                    <label class="form-check-label" for="inlineRadio2">Moderate</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="active" id="inlineRadio3" value="Active">
+                    <label class="form-check-label" for="inlineRadio3">Active</label>
+                </div>
+
+                <input class="btn btn-block btn-primary" type="submit" value="Submit"/>
+                 <p id="results"></p>
+            </form>
+        </div>
+
+    </body>
+</html>
+<!--daryl 19042545-->
+
